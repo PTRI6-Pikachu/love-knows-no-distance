@@ -1,0 +1,24 @@
+{
+  "name": "love-knows-no-distance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PTRI6-Pikachu/love-knows-no-distance.git"
+  },
+  "author": "Team Pikachu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PTRI6-Pikachu/love-knows-no-distance/issues"
+  },
+  "homepage": "https://github.com/PTRI6-Pikachu/love-knows-no-distance#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19",
+    "react-native": "^0.69.4"
+  }
+}
