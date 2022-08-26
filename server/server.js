@@ -4,8 +4,9 @@ const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { graphqlHTTP } = require('express-graphql');
-const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLInt, GraphQLList } = require('graphql');
+const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLInt, GraphQLList, graphql } = require('graphql');
 const { resolve } = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,15 @@ const UserType = new GraphQLObjectType ({
         password: { type: GraphQLString},
     })
 });
+
+const FeedType = new GraphQLObjectType ({
+    name: "Feed", 
+    fields: () => ({
+        id: { type: GraphQLInt},
+        userId: { type: GraphQLInt},
+        message: { type: GraphQLString},
+    })
+})
 
 const RootQuery = new GraphQLObjectType({
     name: "RootQueryType", 
@@ -77,9 +87,16 @@ app.use(express.urlencoded({ extended: true}));
 // add code for express route handlers here
 
 /** CATCH-ALL ROUTE HANDLER FOR ANY REQUESTS TO AN UNKNOWN ROUTE */
-app.use("*", (request, response) => {
-    response.status(404).send("Error: Page not found");
-  });
+// app.use("*", (request, response) => {
+//     response.status(404).send("Error: Page not found");
+//   });
+
+// serve homepage
+app.all('/', (req, res) =>
+    res
+        .setHeader('Content-Type', 'text/html')
+        .sendFile(path.join(__dirname, '../client/index.html'))
+);
 
 /** CONFIGURE EXPRESS GLOBAL ERROR HANDLER */
 app.use((err, req, res, next) => {
