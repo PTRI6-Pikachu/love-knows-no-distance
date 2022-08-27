@@ -4,74 +4,84 @@ const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { graphqlHTTP } = require('express-graphql');
-const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLInt, GraphQLList, graphql } = require('graphql');
+const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLInt, GraphQLNonNull, GraphQLID, GraphQLList, graphql } = require('graphql');
 const { resolve } = require('path');
 const bodyParser = require('body-parser');
+require('dotenv').config();
+
+const User = require('./models/User');
+const connectDB = require('./models/db');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 
 /** DEFINE GRAPHQL SCHEMA */
-const UserType = new GraphQLObjectType ({
+const UserType = new GraphQLObjectType({
     name: "User",
     fields: () => ({
-        id: { type: GraphQLInt},
-        firstName: { type: GraphQLString},
-        lastName: { type: GraphQLString},
-        email: { type: GraphQLString},
-        password: { type: GraphQLString},
+        id: { type: GraphQLID },
+        firstName: { type: GraphQLString },
+        lastName: { type: GraphQLString },
+        email: { type: GraphQLString },
+        password: { type: GraphQLString },
     })
 });
 
-const FeedType = new GraphQLObjectType ({
-    name: "Feed", 
+const FeedType = new GraphQLObjectType({
+    name: "Feed",
     fields: () => ({
-        id: { type: GraphQLInt},
-        userId: { type: GraphQLInt},
-        message: { type: GraphQLString},
+        id: { type: GraphQLID },
+        userId: { type: GraphQLID },
+        message: { type: GraphQLString },
     })
 })
 
 const RootQuery = new GraphQLObjectType({
-    name: "RootQueryType", 
-    fields: () => ({
+    name: "RootQueryType",
+    fields: {
         getAllUsers: {
             type: new GraphQLList(UserType),
-            args: { id: {type: GraphQLInt}}, 
             resolve(parent, args) {
-                // TODO: change after connects to DB
-                return userData
-            }
-        }
-    })
-
-});
-
-const Mutation = new GraphQLObjectType({
-    name: "Mutation", 
-    fields: {
-        createUser: {
-            type: UserType,
-            args: {
-                firstName: {type: GraphQLString},
-                lastName: {type: GraphQLString},
-                email: {type: GraphQLString},
-                password: {type: GraphQLString},
-            },
-            resolve(parent, args) {
-                // TODO: insert userData into DB
-                return args
+                return User.find();
             }
         }
     }
 });
 
-const schema = new GraphQLSchema({query: RootQuery, mutation: Mutation});
+const Mutation = new GraphQLObjectType({
+    name: "Mutation",
+    fields: {
+        createUser: {
+            type: UserType,
+            args: {
+                firstName: { type: GraphQLNonNull(GraphQLString) },
+                lastName: { type: GraphQLNonNull(GraphQLString) },
+                email: { type: GraphQLNonNull(GraphQLString) },
+                password: { type: GraphQLNonNull(GraphQLString) },
+            },
+            resolve(parent, args) {
+                const user = new User({
+                    firstName: args.firstName,
+                    lastName: args.lastName,
+                    email: args.email,
+                    password: args.password
+                });
+
+                return user.save();
+            }
+        }
+    }
+});
+
+const schema = new GraphQLSchema({ query: RootQuery, mutation: Mutation });
+
+//Conect to database
+connectDB();
 
 /** MOUNT GRAPHQL API */
 app.use('/graphql', graphqlHTTP({
-    schema, 
+    schema,
     graphiql: true
 }));
 
@@ -81,7 +91,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 /** DEFINE ROUTE HANDLERS */
 // add code for express route handlers here
@@ -101,15 +111,15 @@ app.all('/', (req, res) =>
 /** CONFIGURE EXPRESS GLOBAL ERROR HANDLER */
 app.use((err, req, res, next) => {
     const defaultErr = {
-      log: 'Express error handler caught unknown middleware error',
-      status: 500,
-      message: { err: 'An error occurred' },
-      
+        log: 'Express error handler caught unknown middleware error',
+        status: 500,
+        message: { err: 'An error occurred' },
+
     };
     const errorObj = Object.assign({}, defaultErr, err);
     console.log(errorObj.log);
     return res.status(errorObj.status).json(errorObj.message);
-  });
+});
 
 /** ADD WEBSOCKET CODE HERE? */
 // add code here for websocket connections/disconnections
@@ -118,3 +128,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`server started on port ${PORT}`)
 });
+
