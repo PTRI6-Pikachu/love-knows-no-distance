@@ -4,27 +4,9 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/homeScreen.js'
-//main page of the app with scrolling feed
-
-// function HomeScreen({navigation}) {
-//   return (
-//     <View style={styles.container}> 
-//       <Header />
-//       <Text>Home Screen</Text>
-//       <Button title="You" onPress={() => navigation.navigate('UserScreen')}
-//       />
-//     </View>
-//   );
-// }
-
-//provides user info and logout functionality
-function UserScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>User Info Will Go Here!</Text>
-    </View>
-  )
-}
+import UserScreen from './screens/userScreen.js'
+import PartnerScreen from './screens/partnerScreen.js'
+import AlbumScreen from './screens/albumScreen.js';
 
 //provides a way to transition between screens and manage nav history
 const Stack = createNativeStackNavigator();
@@ -43,18 +25,49 @@ function App() {
           },
         }}
         initialRouteName='Home'>
-        <Stack.Screen name="LKND" component={HomeScreen} style={styles.container}/>
-        <Stack.Screen name='Current User' component={UserScreen} options={{title:'About You'}}/>
+        <Stack.Screen 
+        name="HomeScreen" 
+        component={HomeScreen} 
+        style={styles.container}
+        options={({ navigation, route }) => ({
+          headerLeft: () => (
+            <Button
+              onPress={() => navigation.navigate('UserScreen')}
+              title="You"
+              color="#fff"
+            />
+          ),
+          headerRight: () => (
+            <Button 
+            onPress={() => navigation.navigate('PartnerScreen')}
+            title="TestBae"
+            color="#fff"
+            />
+          ),
+        })}
+        />
+        <Stack.Screen 
+        name='UserScreen' 
+        component={UserScreen} 
+        options={{title:'About You'}}
+        />
+        <Stack.Screen
+        name='PartnerScreen'
+        component={PartnerScreen}
+        options={{title:'♡︎'}}
+        />
+        <Stack.Screen
+        name='AlbumScreen'
+        component={AlbumScreen}
+        options={{title:'Album'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
     
   );
 }
 
-{/* <View style={styles.container}>
-      <Text style= {{color: '#888', fontSize: 18}}>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View> */}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

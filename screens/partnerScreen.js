@@ -2,15 +2,15 @@ import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { StackActions } from 'react-navigation';
 
-function HomeScreen({navigation}) {
+function PartnerScreen({navigation}) {
   return (
     <View> 
-      <Text>Home Screen</Text>
-      <Button title="Go To Album" onPress={() => navigation.navigate('AlbumScreen')}
+      <Text>Partner Screen</Text>
+      <Button title="Back to Feed" onPress={() => navigation.navigate('HomeScreen')}
       />
     </View>
   );
 }
 
 
-export default HomeScreen;
+export default PartnerScreen;
