@@ -4,14 +4,16 @@ const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { graphqlHTTP } = require('express-graphql');
-const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLInt, GraphQLList } = require('graphql');
+const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLInt, GraphQLList, graphql } = require('graphql');
+const { resolve } = require('path');
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 
 /** DEFINE GRAPHQL SCHEMA */
-const userType = new GraphQLObjectType ({
+const UserType = new GraphQLObjectType ({
     name: "User",
     fields: () => ({
         id: { type: GraphQLInt},
@@ -22,6 +24,15 @@ const userType = new GraphQLObjectType ({
     })
 });
 
+const FeedType = new GraphQLObjectType ({
+    name: "Feed", 
+    fields: () => ({
+        id: { type: GraphQLInt},
+        userId: { type: GraphQLInt},
+        message: { type: GraphQLString},
+    })
+})
+
 const RootQuery = new GraphQLObjectType({
     name: "RootQueryType", 
     fields: () => ({
@@ -29,6 +40,7 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(UserType),
             args: { id: {type: GraphQLInt}}, 
             resolve(parent, args) {
+                // TODO: change after connects to DB
                 return userData
             }
         }
@@ -36,7 +48,24 @@ const RootQuery = new GraphQLObjectType({
 
 });
 
-const Mutation = 'write mutation here';
+const Mutation = new GraphQLObjectType({
+    name: "Mutation", 
+    fields: {
+        createUser: {
+            type: UserType,
+            args: {
+                firstName: {type: GraphQLString},
+                lastName: {type: GraphQLString},
+                email: {type: GraphQLString},
+                password: {type: GraphQLString},
+            },
+            resolve(parent, args) {
+                // TODO: insert userData into DB
+                return args
+            }
+        }
+    }
+});
 
 const schema = new GraphQLSchema({query: RootQuery, mutation: Mutation});
 
@@ -58,9 +87,16 @@ app.use(express.urlencoded({ extended: true}));
 // add code for express route handlers here
 
 /** CATCH-ALL ROUTE HANDLER FOR ANY REQUESTS TO AN UNKNOWN ROUTE */
-app.use("*", (request, response) => {
-    response.status(404).send("Error: Page not found");
-  });
+// app.use("*", (request, response) => {
+//     response.status(404).send("Error: Page not found");
+//   });
+
+// serve homepage
+app.all('/', (req, res) =>
+    res
+        .setHeader('Content-Type', 'text/html')
+        .sendFile(path.join(__dirname, '../client/index.html'))
+);
 
 /** CONFIGURE EXPRESS GLOBAL ERROR HANDLER */
 app.use((err, req, res, next) => {
