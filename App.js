@@ -3,6 +3,8 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import HomeScreen from './screens/homeScreen.js'
 import UserScreen from './screens/userScreen.js'
 import PartnerScreen from './screens/partnerScreen.js'
@@ -10,6 +12,20 @@ import AlbumScreen from './screens/albumScreen.js';
 
 //provides a way to transition between screens and manage nav history
 const Stack = createNativeStackNavigator();
+
+const TabNavigator = createBottomTabNavigator();
+
+function myTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name='Inbox' component={HomeScreen}/>
+      <Tab.Screen name='Album' component={AlbumScreen}/>
+      <Tab.Screen name='Feed' component={HomeScreen}/>
+      <Tab.Screen name='Calendar' component={HomeScreen}/>
+      <Tab.Screen name='Settings' component={HomeScreen}/>
+    </Tab.Navigator>
+  )
+}
 
 function App() {
   return (
