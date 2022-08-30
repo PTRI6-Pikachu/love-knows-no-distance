@@ -1,4 +1,4 @@
-const users = [
+const dummyUsers = [
   {"id":1,"name":"Hilton","email":"hshildrick0@photobucket.com","password":"xW4o9FQ"},
   {"id":2,"name":"Micheal","email":"mjeggo1@google.com.au","password":"eRI7RiE0O"},
   {"id":3,"name":"Letta","email":"lparlot2@cbc.ca","password":"ZeIftnkxJxIZ"},
@@ -199,6 +199,7 @@ const users = [
   {"id":198,"name":"Charlene","email":"ctenniswood5h@bing.com","password":"X9dH86M1ql"},
   {"id":199,"name":"Hilarius","email":"hbaser5i@utexas.edu","password":"IggQG7lml0uG"},
   {"id":200,"name":"Kim","email":"kfollit5j@typepad.com","password":"sNknIHOI2Ap"}
-]
+];
 
-module.exports = { users };
+
+module.exports = { dummyUsers };

@@ -22,26 +22,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 
 /** SERVE HOMEPAGE */
-app.all('/', (req, res) =>
+app.all('/', (req: any, res: any) =>
     res
         .setHeader('Content-Type', 'text/html')
         .sendFile(join(__dirname, '../client/index.html'))
-        );
-        
+);
+
 /** CONFIGURE EXPRESS GLOBAL ERROR HANDLER */
-app.use((err, req, res, next) => {
+app.use((err: any, req: any, res: any, next: any) => {
     const defaultErr = {
         log: 'Express error handler caught unknown middleware error',
         status: 500,
-      message: { err: 'An error occurred' },
-      
+        message: { err: 'An error occurred' },
+
     };
     const errorObj = Object.assign({}, defaultErr, err);
     console.log(errorObj.log);
     return res.status(errorObj.status).json(errorObj.message);
-  });
+});
 
-  /** ADD WEBSOCKET CODE HERE? */
+/** ADD WEBSOCKET CODE HERE? */
 // add code here for websocket connections/disconnections
 
 /** INITIALIZE APOLLO SERVER AND APPLY SERVER MIDDLEWARE */
@@ -49,10 +49,10 @@ async function startServer() {
     const server = new ApolloServer({ typeDefs, resolvers });
     await server.start();
     server.applyMiddleware({ app });
-  }
-  startServer();
-  console.log('Apollo server initialized...')
-  
+}
+startServer();
+console.log('Apollo server initialized...')
+
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`)
 });
@@ -62,7 +62,7 @@ app.listen(PORT, () => {
 
 /* MOUNT GRAPHQL API -- ENABLING BRINGS CLIENT TO GRAPHIQL / DISABLING TO APOLLO INTERFACE */
 // app.use('/graphql', graphqlHTTP({
-//     schema, // 
+//     schema, //
 //     graphiql: true
 // }));
 

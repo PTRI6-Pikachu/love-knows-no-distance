@@ -12,30 +12,28 @@ const typeDefs = gql`
   
     type Post {
         id: ID!
-        userID: String!
+        userId: String!
         title: String!
         author: User!
-        queries: [PostQuery]!
-        query: PostQuery
     }
 
-    type PostQuery {
-        id: ID!
-        userID: String!
-        postID: String!
-        timestamp: Float!
-        content: String!
-    }
+#    type PostQuery {
+#        id: ID!
+#        userID: String!
+#        postID: String!
+#        timestamp: Float!
+#        content: String!
+#    }
   
     type Query {
         getAllUsers: [User!]!
         user(id: String!): User
         getAllPosts: [Post!]
         posts: [Post]!
-        post(id: String!): Post
+#        post(id: String!): Post
         
-        postQueries(id: String, date: Float, offset: Float): [PostQuery]!
-        postQuery(id: String!): PostQuery
+#        postQueries(id: String, date: Float, offset: Float): [PostQuery]!
+#        postQuery(id: String!): PostQuery
     }
 
     type Mutation {
@@ -43,8 +41,8 @@ const typeDefs = gql`
         updatePost(post: UpdatePostInput!): Post!
         deletePost(id: String!): Post!
 
-        createPostQueryInput(postQuery: CreatePostQueryInput!): PostQuery
-        deletePostQuery(id: String!): PostQuery
+#        createPostQueryInput(postQuery: CreatePostQueryInput!): PostQuery
+#        deletePostQuery(id: String!): PostQuery
     }
 
     input UserInput {
@@ -74,3 +72,4 @@ const typeDefs = gql`
 
 module.exports = { typeDefs };
 
+// TODO: FINALIZE SCHEMA
