@@ -7,13 +7,15 @@ const resolvers = {
     getAllPosts() { return dummyPosts } // THIS WILL CONNECT TO THE MONGO DATABASE
   },
 
+  // TODO: ADD MONGO DATABASE LOGIC
   // Mutation: {
-    // createPost (id) { 'ADD A POST TO THE FEED' },
-    // updatePost(postId, name, password) { 'EDIT A POST FROM THE FEED' },
-    // deletePost(postId, name, password) { 'DELETE A POST FROM THE FEED' },
-    // createPostQueryInput(id) { 'CREATE A POST QUERY' },
-    // deletePostQuery(id) { 'DELETE A POST QUERY' }
+  //   createPost (id) { },
+  //   updatePost(postId, name, password) { },
+  //   deletePost(postId, name, password) { },
+  //   createPostQueryInput(id) { },
+  //   deletePostQuery(id) { }
   // }
+
 
   // ADD SUBSCRIPTION CODE HERE
 }

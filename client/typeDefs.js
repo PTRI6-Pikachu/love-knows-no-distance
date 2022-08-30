@@ -37,8 +37,8 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        createPost(post: CreatePostInput!): Post!
-        updatePost(post: UpdatePostInput!): Post!
+        createPost(userId: UserInput!, post: CreatePostInput!): Post!
+        updatePost(userId: UserInput!, post: UpdatePostInput!): Post!
         deletePost(id: String!): Post!
 
 #        createPostQueryInput(postQuery: CreatePostQueryInput!): PostQuery
@@ -49,22 +49,22 @@ const typeDefs = gql`
         email: String!
         password: String!
     }
-  
+#  
     input CreatePostInput {
-        userID: String!
+        userId: String!
         title: String!
     }
-
+#
     input UpdatePostInput {
         id: String!
         title: String!
     }
-
-    input CreatePostQueryInput {
-        postID: String!
-        timestamp: Float!
-        content: String!  
-    }
+#
+#    input CreatePostQueryInput {
+#        postID: String!
+#        timestamp: Float!
+#        content: String!  
+#    }
     
   # Subscription
         # ADD API FOR LISTENING TO THE FEED FOR NEW MESSAGES
