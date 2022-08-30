@@ -2,8 +2,8 @@ const { users } = require('./dummyData');
 
 const resolvers = {
   Query: {
-    getAllUsers() { users }, // THIS WILL CONNECT TO THE MONGO DATABASE (BUT CAN SUB DUMMYDATA)
-    getAllPosts() { posts } // THIS WILL CONNECT TO THE MONGO DATABASE
+    getAllUsers() { return users }, // THIS WILL CONNECT TO THE MONGO DATABASE (BUT CAN SUB DUMMYDATA)
+    // getAllPosts() { return posts } // THIS WILL CONNECT TO THE MONGO DATABASE
   },
 
   Mutation: {

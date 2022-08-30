@@ -9,9 +9,6 @@ const app = express();
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs } = require('../client/typeDefs');
 const { resolvers } = require('../client/resolvers');
-// const { graphqlHTTP } = require('express-graphql');
-const { users } = require('./dummyData');
-
 
 const PORT = process.env.PORT || 3000;
 
@@ -61,9 +58,9 @@ app.listen(PORT, () => {
 });
 
 
-/** UNNEEDED CODE? */
+/** UNNEEDED CODE (KEEP UNTIL NEXT SUCCESSFUL DEV MERGE) */
 
-/** MOUNT GRAPHQL API -- ENABLING BRINGS CLIENT TO GRAPHIQL / DISABLING TO APOLLO INTERFACE */
+/* MOUNT GRAPHQL API -- ENABLING BRINGS CLIENT TO GRAPHIQL / DISABLING TO APOLLO INTERFACE */
 // app.use('/graphql', graphqlHTTP({
 //     schema, // 
 //     graphiql: true
@@ -71,7 +68,7 @@ app.listen(PORT, () => {
 
 // const schema = new GraphQLSchema({query: Query, mutation: Mutation});
 
-/** CATCH-ALL ROUTE HANDLER FOR ANY REQUESTS TO AN UNKNOWN ROUTE */
+/* CATCH-ALL ROUTE HANDLER FOR ANY REQUESTS TO AN UNKNOWN ROUTE */
 // app.use("*", (request, response) => {
 //     response.status(404).send("Error: Page not found");
 //   });
